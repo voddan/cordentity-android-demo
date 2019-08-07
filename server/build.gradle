@@ -4,7 +4,11 @@ plugins {
 
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "com.github.DevAlexey.cordentity:cordentity-indy-utils:$cordentity_version"
+    implementation "com.github.DevAlexey.cordentity:cordentity-agent-connection:$cordentity_version"
+
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"  // to make Kotlin happy
     testImplementation 'junit:junit:4.12'
 }
 
