@@ -1,0 +1,21 @@
+// for the `plugins { id 'com.android.application' version '3.4.2' }` to work
+// https://stackoverflow.com/a/55753364/3144601
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        jcenter()
+        google()
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.android.application") {
+                useModule("com.android.tools.build:gradle:${requested.version}")
+            }
+        }
+    }
+}
+
+
+include ':android'
+include ':server'
+rootProject.name = 'cordentity-android-demo'

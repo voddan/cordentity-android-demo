@@ -1,0 +1,23 @@
+buildscript {
+    ext.kotlin_version = '1.3.41'
+}
+
+// Load all Kotlin and Android plugins, but do not apply
+// https://youtrack.jetbrains.com/issue/KT-31643#focus=streamItem-27-3510019.0-0
+plugins {
+    id 'com.android.application' version '3.4.2' apply false
+    id 'org.jetbrains.kotlin.jvm' version '1.3.41' apply false
+    id 'org.jetbrains.kotlin.android' version '1.3.41' apply false
+    id 'org.jetbrains.kotlin.android.extensions' version '1.3.41' apply false
+}
+
+allprojects {
+    group 'luxoft.cordentity'
+    version '1.0-SNAPSHOT'
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+}
