@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation "com.github.DevAlexey.cordentity:cordentity-indy-utils:$cordentity_version"
     implementation "com.github.DevAlexey.cordentity:cordentity-agent-connection:$cordentity_version"
+    implementation 'io.reactivex:rxjava:1.2.4'  //for Cordentity
 
     testImplementation 'junit:junit:4.12'
 
