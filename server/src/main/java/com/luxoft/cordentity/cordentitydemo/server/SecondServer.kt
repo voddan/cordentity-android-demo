@@ -8,9 +8,17 @@ import com.luxoft.cordentity.cordentitydemo.server.data.Invite
 import com.luxoft.cordentity.cordentitydemo.server.data.IssueCredentialsRequest
 import com.luxoft.cordentity.cordentitydemo.server.data.PossibleIndySchemas
 import io.ktor.application.call
+import io.ktor.application.install
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
+import io.ktor.client.features.json.GsonSerializer
+import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.request.post
+import io.ktor.client.request.url
+import io.ktor.features.ContentNegotiation
+import io.ktor.gson.gson
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.response.respond
 import io.ktor.response.respondText
 import io.ktor.routing.get
@@ -62,18 +70,36 @@ private val server2 = embeddedServer(Netty, port = 8081) {
                     )
             )
 
-            val client = HttpClient(Apache)
-            val invite = client.post<Invite>(port = 8080, body = issueCredential)
+            val client = HttpClient(Apache) {
+                install(JsonFeature) {
+                    serializer = GsonSerializer()
+                }
+            }
+
+            val invite = client.post<Invite> {
+                url(port = 8080, path = "/api/credential/issueCredentials")
+                contentType(ContentType.Application.Json)
+                body = issueCredential
+            }
 
             val connection = indyAgent2.acceptInvite(invite.invite).toBlocking().value()
 
-            call.respondText(connection.toString())
+            call.respondText(""" 
+                Connection:
+                    me: ${connection.myDID()}
+                    they: ${connection.partyDID()}
+            """.trimIndent())
         }
 
         get("/") {
             call.respondText("Hello World!")
         }
 
+        install(ContentNegotiation) {
+            gson {
+                setPrettyPrinting()
+            }
+        }
     }
 }
 

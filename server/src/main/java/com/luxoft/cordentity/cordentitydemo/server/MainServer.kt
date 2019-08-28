@@ -12,6 +12,7 @@ import com.luxoft.cordentity.cordentitydemo.server.data.IssueCredentialsRequest
 import com.luxoft.cordentity.cordentitydemo.server.data.PossibleIndySchemas
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
 import io.ktor.request.receive
@@ -23,6 +24,7 @@ import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import org.slf4j.event.Level
 import rx.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import kotlin.random.Random
@@ -62,7 +64,7 @@ private val server1 = embeddedServer(Netty, port = 8080) {
             }
 
             post("issueCredentials") {
-                val issueCredential = call.receive(IssueCredentialsRequest::class)
+                val issueCredential = call.receive<IssueCredentialsRequest>()
                 val invite = issueCredentials(indyAgent1, indy1, issueCredential)
                 call.respond(invite)
             }
@@ -102,6 +104,10 @@ private val server1 = embeddedServer(Netty, port = 8080) {
         gson {
             setPrettyPrinting()
         }
+    }
+
+    install(CallLogging) {
+        level = Level.INFO
     }
 }
 
