@@ -1,0 +1,9 @@
+version: '3.3'
+services:
+
+  indypool:
+    network_mode: host
+    image: "teamblockchain/indy-pool:1.7.0"
+    ports:
+      - "9701-9708:9701-9708"
+    container_name: indypool
